@@ -16,6 +16,13 @@ public interface MatrixView<T> {
 
     Either<String, T> get(int row, int column);
 
+    /**
+     *  Converts matrix to a list of lists.
+     *
+     * Result will have numRows lists, each with numColumns elements of type T.
+     *
+     * @return Row major list of lists containing data of this matrix
+     */
     default List<List<T>> asList() {
         return IntStream.range(0, this.numRows())
                 .mapToObj(i -> IntStream.range(0, this.numColumns() )
@@ -24,11 +31,16 @@ public interface MatrixView<T> {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Returns a new view with rows and columns swapped.
+     *
+     * @return A transposed view of this matrix
+     */
     default MatrixView<T> transpose() {
         return new TransposeView<>(this);
     }
 
     static <T> Either<String, MatrixView<T>> fromList(List<List<T>> input) {
-        return FlatArrayMatrix.fromList(input).map(it -> it);
+        return DenseMatrix.fromList(input).map(it -> it);
     }
 }

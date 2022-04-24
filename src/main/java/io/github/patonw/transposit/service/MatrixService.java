@@ -19,10 +19,18 @@ public class MatrixService {
         this.matrixValidator = matrixValidator;
     }
 
+    /**
+     * Converts a list of lists into a valid matrix or a sequence of errors.
+     */
     public Validation<Seq<String>, MatrixView<Number>> validate(List<List<Number>> input) {
         return matrixValidator.validate(input);
     }
 
+    /**
+     * Returns a transposed view of the input matrix.
+     *
+     * The returned view may share the same underlying data or may use newly allocated memory.
+     */
     public MatrixView<Number> transpose(MatrixView<Number> input) {
         return input.transpose();
     }

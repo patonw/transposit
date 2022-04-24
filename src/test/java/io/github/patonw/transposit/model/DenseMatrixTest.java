@@ -9,19 +9,19 @@ import java.util.List;
 import static io.github.patonw.transposit.model.MatrixView.INVALID_COLUMN;
 import static io.github.patonw.transposit.model.MatrixView.INVALID_ROW;
 
-class FlatArrayMatrixTest {
+class DenseMatrixTest {
 
     @Test
     void testInvalidMatrix() {
-        VavrAssertions.assertThat(FlatArrayMatrix.fromList(null))
+        VavrAssertions.assertThat(DenseMatrix.fromList(null))
                 .isLeft();
-        VavrAssertions.assertThat(FlatArrayMatrix.fromList(List.of(List.of(1), List.of(2, 4), List.of(3))))
+        VavrAssertions.assertThat(DenseMatrix.fromList(List.of(List.of(1), List.of(2, 4), List.of(3))))
                 .isLeft();
     }
 
     @Test
     void testEmptyMatrix() {
-        VavrAssertions.assertThat(FlatArrayMatrix.fromList(List.of()))
+        VavrAssertions.assertThat(DenseMatrix.fromList(List.of()))
                 .isRight()
                 .hasRightValueSatisfying(m -> {
                     Assertions.assertThat(m.numRows())
@@ -33,7 +33,7 @@ class FlatArrayMatrixTest {
                             .containsOnLeft(INVALID_ROW);
                 });
 
-        VavrAssertions.assertThat(FlatArrayMatrix.fromList(List.of(List.of())))
+        VavrAssertions.assertThat(DenseMatrix.fromList(List.of(List.of())))
                 .isRight()
                 .hasRightValueSatisfying(m -> {
                     Assertions.assertThat(m.numRows())
@@ -48,7 +48,7 @@ class FlatArrayMatrixTest {
 
     @Test
     void testRowVector() {
-        VavrAssertions.assertThat(FlatArrayMatrix.fromList(List.of(List.of(1,2,3))))
+        VavrAssertions.assertThat(DenseMatrix.fromList(List.of(List.of(1,2,3))))
                 .isRight()
                 .hasRightValueSatisfying(m -> {
                     Assertions.assertThat(m.numRows())
@@ -64,7 +64,7 @@ class FlatArrayMatrixTest {
 
     @Test
     void testColumnVector() {
-        VavrAssertions.assertThat(FlatArrayMatrix.fromList(List.of(List.of(1), List.of(2), List.of(3))))
+        VavrAssertions.assertThat(DenseMatrix.fromList(List.of(List.of(1), List.of(2), List.of(3))))
                 .isRight()
                 .hasRightValueSatisfying(m -> {
                     Assertions.assertThat(m.numRows())
@@ -80,7 +80,7 @@ class FlatArrayMatrixTest {
 
     @Test
     void testSquareMatrix() {
-        VavrAssertions.assertThat(FlatArrayMatrix.fromList(List.of(List.of(1, 2, 3), List.of(4, 5, 6), List.of(7, 8, 9))))
+        VavrAssertions.assertThat(DenseMatrix.fromList(List.of(List.of(1, 2, 3), List.of(4, 5, 6), List.of(7, 8, 9))))
                 .isRight()
                 .hasRightValueSatisfying(m -> {
                     Assertions.assertThat(m.numRows())

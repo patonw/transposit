@@ -7,12 +7,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FlatArrayMatrix<T> implements MatrixView<T> {
+public class DenseMatrix<T> implements MatrixView<T> {
     private final ArrayList<T> data;
     private final int numRows;
     private final int numColumns;
 
-    public static <T> Either<String, FlatArrayMatrix<T>> fromList(List<List<T>> input) {
+    public static <T> Either<String, DenseMatrix<T>> fromList(List<List<T>> input) {
         if (input == null)
             return Either.left("Matrix cannot be null");
 
@@ -23,12 +23,12 @@ public class FlatArrayMatrix<T> implements MatrixView<T> {
         int numRows = input.size();
         int numColumns = numRows > 0 ? input.get(0).size() : 0;
         if (data.size() == numRows * numColumns)
-            return Either.right(new FlatArrayMatrix<>(data, numRows, numColumns));
+            return Either.right(new DenseMatrix<>(data, numRows, numColumns));
         else
             return Either.left("Rows must have a uniform number of columns");
     }
 
-    protected FlatArrayMatrix(ArrayList<T> data, int numRows, int numColumns) {
+    protected DenseMatrix(ArrayList<T> data, int numRows, int numColumns) {
         this.data = data;
         this.numRows = numRows;
         this.numColumns = numColumns;

@@ -1,14 +1,12 @@
 package io.github.patonw.transposit.helper;
 
-import io.github.patonw.transposit.model.FlatArrayMatrix;
 import io.github.patonw.transposit.model.MatrixView;
-import io.github.patonw.transposit.model.NestedListMatrix;
 import io.vavr.collection.Seq;
 import io.vavr.collection.Vector;
-import io.vavr.control.Either;
 import io.vavr.control.Validation;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.util.List;
 
 @ApplicationScoped
@@ -16,8 +14,19 @@ public class MatrixValidatorImpl implements MatrixValidator {
     static final int MAX_ELEMENTS = 105;
     static final float VALUE_LIMIT = 109.0f;
 
+    private final MatrixFactory matrixFactory;
+
+    @Inject
+    public MatrixValidatorImpl(MatrixFactory matrixFactory) {
+        this.matrixFactory = matrixFactory;
+    }
+
     /**
      * Validates a nested list of numbers and returns a matrix.
+     *
+     * Input must be a JSON array of arrays with numeric values with at least one element.
+     * Total number of elements must not exceed 105.
+     * Elements must be in the range of [-109..109]
      *
      * @return A Valid with the matrix or an Invalid of the errors
      */
@@ -44,7 +53,7 @@ public class MatrixValidatorImpl implements MatrixValidator {
         if (input.stream().anyMatch(row -> row.stream().anyMatch(it -> (it.floatValue() < -VALUE_LIMIT) || (it.floatValue() > VALUE_LIMIT))))
             return Validation.invalid(Vector.of(String.format("Matrix entries must be elements of [-%.1f, %.1f]", VALUE_LIMIT, VALUE_LIMIT)));
 
-        var matrix = MatrixView.fromList(input);
+        var matrix = matrixFactory.matrix(input);
         if (matrix.isLeft())
             return Validation.invalid(Vector.of(matrix.getLeft()));
         else

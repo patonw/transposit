@@ -19,6 +19,16 @@ public class MatrixResource {
         this.matrixService = matrixService;
     }
 
+    /**
+     * Transpose a matrix.
+     *
+     * If the input is a valid matrix, responds with the transposition.
+     * Otherwise, responds with a list of errors.
+     *
+     * Input must be a JSON array of arrays with numeric values with at least one element.
+     * Total number of elements must not exceed 105.
+     * Elements must be in the range of [-109..109]
+     */
     @POST
     @Path("/transpose")
     public Response transposeMatrix(List<List<Number>> input) {

@@ -6,14 +6,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static java.util.function.Function.identity;
 import static org.assertj.vavr.api.VavrAssertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 class MatrixValidatorImplTest {
+    MatrixFactory matrixFactory = new MatrixFactoryImpl("default");
+
     @Test
     public void testInvalid() {
-        var validator = new MatrixValidatorImpl();
+        var validator = new MatrixValidatorImpl(matrixFactory);
         assertThat(validator.validate(List.of()))
                 .isInvalid();
         assertThat(validator.validate(List.of(List.of())))
@@ -41,7 +41,7 @@ class MatrixValidatorImplTest {
 
     @Test
     public void testValid() {
-        var validator = new MatrixValidatorImpl();
+        var validator = new MatrixValidatorImpl(matrixFactory);
         assertThat(validator.validate(List.of(List.of(1,2), List.of(3, 4))))
                 .isValid();
     }
